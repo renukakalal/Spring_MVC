@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -428,7 +429,7 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public boolean updateUserDetails1(int id, String name, String trainer, String packaged, double amount, double amountPaid, double balance, String filePath) {
+    public boolean updateUserDetails1(int id, String name, String trainer, String packaged, double amount, double amountPaid, double balance, String filePath,int weight,float height) {
         log.info("Updating user details in service");
 
         // Fetch the user by ID
@@ -549,18 +550,75 @@ public class AdminServiceImplementation implements AdminService {
     @Override
     public boolean updateSlot(int entityId, int trainerId) {
         log.info("assign slot request in service ");
-        boolean  updated= adminRepository.updateSlot(entityId, trainerId);
+        boolean updated = adminRepository.updateSlot(entityId, trainerId);
         return true;
     }
 
     @Override
     public TrainerDetailsEntity getDetailsById(int id) {
-        TrainerDetailsEntity entity=adminRepository.getDetailsById(id);
+        TrainerDetailsEntity entity = adminRepository.getDetailsById(id);
         return entity;
     }
 
+    @Override
+    public List<AdminRegistractionEntity> getUserById(String trainer) {
 
+        log.info("request in service");
+
+        List<AdminRegistractionEntity> list = adminRepository.getUserById(trainer);
+        return list;
+    }
+
+    @Override
+    public boolean saveDietPlan(DietPlanDTO dietPlanDTO) {
+        System.out.println("Saving Diet Plan: " + dietPlanDTO);
+
+        DietPlanEntity dietPlanEntity = new DietPlanEntity();
+        dietPlanEntity.setId(dietPlanDTO.getId());
+        dietPlanEntity.setUserId(dietPlanDTO.getUserId());
+        dietPlanEntity.setMealTime(dietPlanDTO.getMealTime());
+        dietPlanEntity.setFoodItems(dietPlanDTO.getFoodItems());
+        dietPlanEntity.setCalories(dietPlanDTO.getCalories());
+        dietPlanEntity.setExercise(dietPlanDTO.getExercise());
+        dietPlanEntity.setDuration(dietPlanDTO.getDuration());
+        dietPlanEntity.setIntensity(dietPlanDTO.getIntensity());
+
+        boolean saved = adminRepository.saveDietPlan(dietPlanEntity);
+        return true;  // Instead of always returning true
+    }
+
+    @Override
+    public List<DietPlanEntity> getDietPlan(int UserId) {
+        log.info("request in service");
+
+            log.info("Request in service");
+
+            return adminRepository.getDietPlan(UserId);
+        }
+
+    @Override
+    public boolean saveChanges(ChangesDTO changesDTO,String filePath) {
+        ChangesEntity entity=new ChangesEntity();
+        entity.setId(changesDTO.getId());
+        entity.setUserId(changesDTO.getUserId());
+        entity.setHeight(changesDTO.getHeight());
+        entity.setWeight(changesDTO.getWeight());
+        entity.setFile(filePath);
+        System.out.println("=========================="+entity.getFile());
+        log.info("============== {}",entity);
+        boolean saved=adminRepository.saveChanges(entity);
+        return true;
+    }
+
+    @Override
+    public List<ChangesEntity> getChanges(int UserId) {
+        List<ChangesEntity> entity=adminRepository.getChanges(UserId);
+        return entity;
+    }
 }
+
+
+
 
 
 

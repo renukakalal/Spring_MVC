@@ -4,6 +4,7 @@ package com.xworkz.gym.service;
 import com.xworkz.gym.dto.*;
 import com.xworkz.gym.entity.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -32,7 +33,7 @@ public interface AdminService {
     Long getPhoneNumber(long phoneNumber);
     Long getRegcountName(String name);
     Long getRegCountEmail(String email);
-    public boolean updateUserDetails1(int id, String name, String trainer, String packaged, double amount, double amountPaid, double balance, String filePath) ;
+    public boolean updateUserDetails1(int id, String name, String trainer, String packaged, double amount, double amountPaid, double balance, String filePath,int weight,float height) ;
 
    // Long getRegCountPhoneNumber(long phoneNumber);
 //
@@ -55,4 +56,16 @@ AdminRegistractionEntity updateUserDetails(int id);
    boolean updateSlot(int entityId, int trainerId);
 
    TrainerDetailsEntity getDetailsById(int id);
+
+    List<AdminRegistractionEntity> getUserById(String trainer);
+
+    boolean saveDietPlan(DietPlanDTO dietPlanDTO);
+
+    List<DietPlanEntity> getDietPlan(int UserId);
+
+    boolean saveChanges(ChangesDTO changesDTO,String filepath);
+
+    List<ChangesEntity>  getChanges(int User);
+
+
 }

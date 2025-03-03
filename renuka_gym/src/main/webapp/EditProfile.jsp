@@ -150,6 +150,7 @@
 
         <form action="EditDetails" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id" value="${entity.id}" />
+            <input type="hidden" name="UserId" value="${entity.id}" />
 
             <div class="form-grid">
                 <!-- Personal Information -->
@@ -205,14 +206,22 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="instalment">Instalment</label>
-                    <input type="text" id="instalment" name="instalment" value="${entity.instalment}" />
+                    <label for="instalment">height</label>
+                    <input type="text" id="height" name="height" value="${entity.height}" />
                 </div>
+                 <div class="form-group">
+                                    <label for="instalment">weight</label>
+                                    <input type="text" id="weight" name="weight" value="${entity.weight}" />
+                                </div>
+                                 <div class="form-group">
+                                                    <label for="instalment">Instalment</label>
+                                                    <input type="text" id="instalment" name="instalment" value="${entity.instalment}" />
+                                                </div>
 
                 <!-- Profile Photo -->
                 <div class="form-group full-width">
                     <label for="file">Profile Photo</label>
-                    <input type="file" id="file" name="file" accept="image/*" />
+                    <input type="file" id="file" name="files" />
                 </div>
 
                 <!-- Submit Button -->
@@ -221,6 +230,8 @@
                 </div>
             </div>
         </form>
+        ${success}
+        ${failure}
     </div>
 
 </body>

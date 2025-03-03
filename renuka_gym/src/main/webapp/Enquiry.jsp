@@ -211,6 +211,8 @@
                         <button type="submit" class="btn btn-success btn-lg">Submit Enquiry</button>
                     </div>
                 </form>
+                ${success}
+                ${failure}
             </div>
         </div>
     </div>

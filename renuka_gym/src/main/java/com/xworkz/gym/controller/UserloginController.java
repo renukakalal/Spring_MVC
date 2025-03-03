@@ -2,9 +2,11 @@ package com.xworkz.gym.controller;
 
 
 import com.xworkz.gym.dto.AdminRegistrationDTO;
+import com.xworkz.gym.dto.ChangesDTO;
 import com.xworkz.gym.entity.AdminRegistractionEntity;
 import com.xworkz.gym.service.AdminService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,6 +44,30 @@ public class UserloginController {
     public String showLoginPage() {
         return "UserSignIn";
     }
+    @GetMapping("/image")
+    public void display(HttpServletResponse response, @RequestParam String filePath) throws Exception {
+        System.out.println("this is image: " + filePath);  // Debug log
+        response.setContentType("image/jpeg");  // Fix content type (case-sensitive)
+
+        File file = new File("C:\\projectimages\\" + filePath);
+        if (!file.exists()) {
+            System.out.println("File not found: " + file.getAbsolutePath());  // Debug log
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+        ServletOutputStream outputStream = response.getOutputStream();
+        IOUtils.copy(inputStream, outputStream);
+        response.flushBuffer();
+    }
+
+
+
+
+
+
+
 
     @PostMapping("/userSignIn")
     public String userLogin(@RequestParam("email") String email, @RequestParam("password") String password, Model model) {
@@ -69,6 +101,8 @@ public class UserloginController {
         model.addAttribute("errorMessage", "Invalid email or password.");
         return "UserSignIn"; // Stay on the login page with the error message
     }
+
+
 
 
     @GetMapping("/ResetPassword")
@@ -108,6 +142,7 @@ public class UserloginController {
 
     @PostMapping("/EditDetails")
     public String updateUserDetailsAndPhoto(
+            @RequestParam("files") MultipartFile multipartFile,
             @RequestParam("id") int id,
             @RequestParam("name") String name,
             @RequestParam("trainer") String trainer,
@@ -115,10 +150,12 @@ public class UserloginController {
             @RequestParam("amount") double amount,
             @RequestParam("amountPaid") double amountPaid,
             @RequestParam("balance") double balance,
-            @RequestParam("file") MultipartFile multipartFile,  // For the profile photo
-            AdminRegistrationDTO dto, Model model) throws Exception {
+            @RequestParam("weight") int weight,
+            @RequestParam("height") float height,
+             // For the profile photo
+            AdminRegistrationDTO dto,ChangesDTO changesDTO, Model model)  {
 
-        log.info("Updating user details and profile photo");
+        log.info("Updating user details and profile photo===============================================");
 
         // 1. Handle profile photo upload if a file is selected
         String filePath = null;
@@ -138,16 +175,20 @@ public class UserloginController {
             }
         }
 
+
+        boolean saved=adminService.saveChanges(changesDTO,filePath);
+
         // 2. Update user details
-        boolean detailsUpdated = adminService.updateUserDetails1(id, name, trainer, packaged, amount, amountPaid, balance, filePath);
+        boolean detailsUpdated = adminService.updateUserDetails1(id, name, trainer, packaged, amount, amountPaid, balance, filePath,weight,height);
+
 
         if (!detailsUpdated) {
-            model.addAttribute("errorMessage", "Failed to update user details.");
+            model.addAttribute("success", "Failed to update user details.");
             return "error"; // Return an error page if the details update fails
         }
 
         // Add success message
-        model.addAttribute("successMessage", "User details and profile photo updated successfully.");
+        model.addAttribute("failure", "User details and profile photo updated successfully.");
 
         // Redirect to the Profile page
         return "Profile";
@@ -175,36 +216,10 @@ public class UserloginController {
     }
 
 
-    @PostMapping("/uploadFile")
-    public String updateProfilePhoto(@RequestParam("id") int id,@RequestParam("file") MultipartFile multipartFile,
-                                     AdminRegistrationDTO dto, Model model) throws Exception {
 
-        String filePath = null;
 
-        if (!multipartFile.isEmpty()) {
-            try {
-                // Save the file to the desired location (e.g., C:\\projectimages\\)
-                byte[] bytes = multipartFile.getBytes();
-                Path path = Paths.get("C:\\projectimages\\" + System.currentTimeMillis() + ".jpg");
-                Files.write(path, bytes);
 
-                // Save the file path to the database (or wherever it's needed)
-                filePath = path.getFileName().toString();
-                boolean isUpdated = adminService.updatePhoto(dto, filePath);
 
-                if (isUpdated) {
-                    model.addAttribute("successMessage", "Profile photo updated successfully.");
-                } else {
-                    model.addAttribute("errorMessage", "Failed to update profile photo.");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                model.addAttribute("errorMessage", "Error saving the file.");
-            }
-        }
-
-        return "UpdateProfilePhoto";  // Return the updated page after upload
-    }
 }
 
 

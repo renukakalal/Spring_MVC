@@ -1,3 +1,4 @@
+
 <%@ page isELIgnored="false" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -40,7 +41,7 @@
     </c:if>
 
     <c:if test="${empty entity}">
-        <div class="alert alert-warning text-center">No entity found.</div>
+        <div class="alert alert-warning text-center">No user found.</div>
     </c:if>
 
     <!-- Trainer Selection Form -->
@@ -74,6 +75,9 @@
         <!-- Submit Button -->
         <button type="submit" class="btn btn-success btn-sm btn-block">Submit</button>
     </form>
+    </form>
+    ${success}
+    ${failure}
 </div>
 
 <!-- jQuery Script for Filtering Trainers -->

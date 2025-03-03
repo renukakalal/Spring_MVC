@@ -248,6 +248,8 @@
             <li><a href="getTrainerDetails"><i class="fas fa-chart-bar"></i>TrainerDetails</a></li>
             <li><a href="assignSlot"><i class="fas fa-cog"></i>AssignSlot</a></li>
             <li><a href="UserTrainerAndSlot.jsp"><i class="fas fa-cog"></i>UseSlotAndTrainer</a></li>
+            <li><a href="DietPlan.jsp"><i class="fas fa-cog"></i>DietPlan</a></li>
+          
 
 
         </ul>
@@ -268,7 +270,8 @@
                 </div>
                 <div class="admin-info">
                     <div class="admin-name">Admin</div>
-                    <div class="admin-logout">Logout</div>
+                    <a href="SignIn.jsp" class="admin-info">Logout</a>
+
                 </div>
             </div>
         </div>

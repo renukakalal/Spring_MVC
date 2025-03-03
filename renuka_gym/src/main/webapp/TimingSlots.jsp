@@ -111,27 +111,37 @@
         <h3>Trainer Details</h3>
         <table border="1" class="table table-striped">
             <thead class="thead-dark">
-                <tr>
-                    <th>Trainer</th>
-                    <th>Phone Number</th>
-                    <th>Slot Timings</th>
-                    <th>Delete Slot</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="trainer" items="${listofdto}">
-                    <tr>
-                        <td>${trainer.trainer}</td>
-                        <td>${trainer.phoneNumber}</td>
-                        <td>${trainer.slotTimings}</td>
-                        <td>
-                            <a href="deleteSlot?id=${trainer.id}" class="btn btn-danger btn-sm">Delete</a>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-    </div>
+               <tr>
+                                   <th>Trainer</th>
+                                   <th>Phone Number</th>
+                                   <th>Slot Timings</th>
+                                   <th>Delete Slot</th>
+                               </tr>
+                           </thead>
+                           <tbody>
+                               <c:forEach var="trainer" items="${listofdto}">
+                                   <tr>
+                                       <input type="hidden" name="trainer" value="${trainer.id}">
+                                       <td>${trainer.trainer}</td>
+                                       <td>${trainer.phoneNumber}</td>
+                                       <td>${trainer.slotTimings}</td>
+                                   <td><a href="getAllotedUsers?trainer=${trainer.id}"><i class="fas fa-cog"></i>delete</a></td>
+
+
+                                       </td>
+                                   </tr>
+                               </c:forEach>
+                           </tbody>
+                       </table>
+                   </div>
+                     ${success}
+                     ${failure}
+
+                   <!-- Delete Confirmation Modal -->
+
+
+
+
 
     <script>
         // Function to toggle the form visibility
@@ -185,5 +195,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

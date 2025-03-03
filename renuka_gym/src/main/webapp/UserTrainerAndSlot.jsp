@@ -33,9 +33,7 @@
 
     <!-- Entity Details -->
     <c:if test="${not empty entity}">
-        <div class="alert alert-success">
-            <p><strong>Trainer ID:</strong> ${entity.trainer}</p>
-        </div>
+
 
         <!-- Form to Fetch Trainer Details -->
         <form id="trainerForm" action="trainerSlotDetails" method="GET">
@@ -67,9 +65,7 @@
         </div>
     </c:if>
 
-    <c:if test="${empty trainerDetails}">
-        <div class="alert alert-warning text-center mt-4">No trainer details found.</div>
-    </c:if>
+
 </div>
 
 </body>

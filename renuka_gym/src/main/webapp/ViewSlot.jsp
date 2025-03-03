@@ -34,11 +34,6 @@
     </div>
 </c:if>
 
-<c:if test="${empty trainerDetails}">
-    <div class="container mt-5">
-        <p class="text-center">No trainer details found.</p>
-    </div>
-</c:if>
 
 </body>
 </html>

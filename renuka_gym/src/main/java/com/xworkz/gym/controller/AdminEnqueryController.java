@@ -44,9 +44,10 @@ public class AdminEnqueryController {
 
         if (saved) {
 
-            model.addAttribute("saved","your Enquiry details are successfull");
+            model.addAttribute("success","your Enquiry details are successfull");
             return "Success";
         } else {
+            model.addAttribute("failure","your details not saved");
             return "Enquiry";
         }
     }
@@ -79,7 +80,7 @@ public class AdminEnqueryController {
         if (updatedValue > 0) {
             model.addAttribute("enquiryName", "Successfully Updated Details Of " + updatedBy);
         } else {
-            model.addAttribute("notupdated", "Failed to Update Details of " + updatedBy);
+            model.addAttribute("notUpdated", "Failed to Update Details of " + updatedBy);
         }
 
         return "Success";

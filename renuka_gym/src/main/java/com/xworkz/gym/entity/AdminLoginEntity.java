@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name="admin_details")
+@Table(name="admin_details1")
 public class AdminLoginEntity {
 
     @Id

@@ -25,7 +25,7 @@ public class AdminRegistrationDTO {
     private String gender;
     private int weight;
     private int age;
-    private double height;
+    private float height;
 
 
 }

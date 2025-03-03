@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 
@@ -872,11 +873,121 @@ public class AdminRepositoryImplementation implements AdminRepository {
 
         return trainerDetails;
     }
+
+    @Override
+    public List<AdminRegistractionEntity> getUserById(String trainer) {
+        log.info("trainer id in repository: " + trainer);
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        List<AdminRegistractionEntity> resultList = null;
+
+        try {
+            Query query = em.createNamedQuery("findUserById");
+            query.setParameter("SetId", trainer);
+
+            resultList = query.getResultList(); // Store the result in the list
+            log.info("Fetched list: " + resultList);
+        } catch (Exception e) {
+            if (et.isActive()) {
+                et.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+
+        return resultList; // Return the fetched list instead of null
+    }
+
+    @Override
+    public boolean saveDietPlan(DietPlanEntity dietPlanEntity) {
+        System.out.println("Saving Diet Plan: " + dietPlanEntity);
+
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+            em.persist(dietPlanEntity);
+            et.commit();
+            return true; // Return true only if commit succeeds
+        } catch (Exception e) {
+            if (et.isActive()) {
+                et.rollback();
+            }
+            e.printStackTrace(); // Print the exception for debugging
+            return false; // Indicate failure
+        } finally {
+            em.close();
+        }
+    }
+
+
+    @Override
+    public List<DietPlanEntity> getDietPlan(int UserId) {  // Ensure consistent naming
+        log.info("Request in repository");
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            Query query = em.createNamedQuery("findByUserId"); // Ensure NamedQuery exists
+            query.setParameter("UserId", UserId);  // Ensure parameter name matches ":userId"
+
+            return query.getResultList();  // Return list of diet plans
+        } catch (Exception e) {
+            e.printStackTrace();  // Print stack trace for debugging
+            return Collections.emptyList();  // Return empty list if exception occurs
+        } finally {
+            em.close();  // Ensure EntityManager is closed
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean saveChanges(ChangesEntity changesEntity) {
+        log.info("Saving changes for user: " + changesEntity.getId());
+        log.info("save1........");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        log.info("save execution queries");
+        try {
+            et.begin();
+            log.info("executing in begain");
+            em.merge(changesEntity);
+            log.info("executing in merge");
+            et.commit();
+            log.info("executing in commit");
+            return true;
+        } catch (Exception e) {
+            if (et.isActive()) {
+                et.rollback();
+            }
+            log.error("Error while saving changes: ", e);
+            return false;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<ChangesEntity> getChanges(int UserId) {
+        log.info("Request in repository");
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            Query query = em.createNamedQuery("findChangesById"); // Ensure NamedQuery exists
+            query.setParameter("UserId", UserId);  // Ensure parameter name matches ":userId"
+
+            return query.getResultList();  // Return list of diet plans
+        } catch (Exception e) {
+            e.printStackTrace();  // Print stack trace for debugging
+            return Collections.emptyList();  // Return empty list if exception occurs
+        } finally {
+            em.close();  // Ensure EntityManager is closed
+        }
+
+    }
+
+
 }
-
-
-
-
 
 
 

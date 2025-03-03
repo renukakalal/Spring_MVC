@@ -119,6 +119,8 @@
         </div>
         <button type="submit" class="btn btn-success">Update</button>
     </form>
+    ${success}
+    ${failure}
     <a href="registerView?id=${entity.id}" class="btn btn-info mt-3">View Your Details</a>
 </div>
 

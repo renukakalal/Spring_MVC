@@ -55,8 +55,10 @@ public class AdminRegisterController {
         System.out.println("Register request received: " + adminRegistrationDTO);
         boolean saved = adminService.register(adminRegistrationDTO);
         if (saved) {
+            model.addAttribute("success","your details successfully saved");
             return "Success";
         } else {
+            model.addAttribute("failure","your details not saved");
             return "error";
         }
     }
@@ -89,17 +91,27 @@ public class AdminRegisterController {
                                @RequestParam("packaged") String packaged,
                                @RequestParam("trainer") String trainer,
                                @RequestParam("amount") double amount,
-                               @RequestParam("balance") double balance,
-                               Model model) {
+                               @RequestParam("balance") double balance,Model model) {
         log.info("Requesting status for RegisterId: " + registerId);
 
-        int updatedValue = adminService.updateRegisterDetails(registerId,name, packaged, trainer, amount, balance);
-        boolean saved= adminService.saveRegHistory(registerViewDTO);
+        int updatedValue = adminService.updateRegisterDetails(registerId, name, packaged, trainer, amount, balance);
+        boolean saved = adminService.saveRegHistory(registerViewDTO);
         if (updatedValue > 0) {
+            model.addAttribute("success", "your details successfully saved");
+        } else {
+        model.addAttribute("failure","your details not successfully saved");
             model.addAttribute("packaged", "Successfully Updated Details Of " + packaged);
             model.addAttribute("trainer", "Successfully Updated Details Of " + trainer);
             model.addAttribute("amount", "Successfully Updated Details Of " + amount);
             model.addAttribute("balance", "Successfully Updated Details Of " + balance);
+
+
+            if(saved)
+            {
+                model.addAttribute("success","your details successfully updated");
+            }else {
+                model.addAttribute("failure","your details not updated");
+            }
 
             return "Success";
         }

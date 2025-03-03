@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
 //@NamedQuery(name = "updateTrainerId",query = "UPDATE AdminRegistractionEntity u SET u.trainerId= :trainerId WHERE u.entityId = :entityId")
 @NamedQuery(name = "updateTrainerId", query = "UPDATE AdminRegistractionEntity u SET u.trainer = (SELECT t FROM TrainerDetailsEntity t WHERE t.id = :trainerId) WHERE u.id = :entityId"
 )
+@NamedQuery(name = "findUserById", query = "SELECT t FROM AdminRegistractionEntity t WHERE t.trainer = :SetId")
 
 
 
@@ -104,7 +105,7 @@ public class AdminRegistractionEntity {
     @Column(name="age")
     private int age;
     @Column(name ="height")
-    private double height;
+    private float height;
 
 
 }

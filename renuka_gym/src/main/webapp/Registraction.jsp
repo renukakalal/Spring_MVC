@@ -286,6 +286,8 @@
                         <button type="submit" class="btn btn-primary btn-lg px-5">Register Now</button>
                     </div>
                 </form>
+                ${success}
+                ${failure}
             </div>
         </div>
     </div>

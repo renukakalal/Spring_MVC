@@ -194,6 +194,8 @@
                                     <button type="submit" class="btn btn-success btn-sm w-100">Update</button>
                                 </td>
                                 <td>
+                                ${success}
+                                 ${failure}
                                <a href="EnquiryView?id=${dto.id}"/>View</button>
                                </td>
                             </form>

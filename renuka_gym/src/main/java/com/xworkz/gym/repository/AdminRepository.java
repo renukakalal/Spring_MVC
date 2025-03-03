@@ -1,6 +1,7 @@
 package com.xworkz.gym.repository;
 
 
+import com.xworkz.gym.dto.ChangesDTO;
 import com.xworkz.gym.dto.TimeSlotDetailsDTO;
 import com.xworkz.gym.entity.*;
 import org.springframework.stereotype.Repository;
@@ -72,6 +73,17 @@ public interface AdminRepository {
   boolean deteteById(int id);
   boolean updateSlot(int entityId, int trainerId);
   TrainerDetailsEntity getDetailsById(int id);
+  List<AdminRegistractionEntity> getUserById(String trainer);
+  boolean saveDietPlan(DietPlanEntity dietPlanEntity);
+  List<DietPlanEntity> getDietPlan(int UserId);
+
+  boolean saveChanges(ChangesEntity changesEntity);
+  List<ChangesEntity>  getChanges(int UserId);
+
+
+
+
+
 
 
 

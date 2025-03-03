@@ -97,12 +97,17 @@ public class AdminSlotsController {
         private AdminService adminService;
 
         @GetMapping("/deleteSlot")
-        public String deleteSlot(@RequestParam("id") int id) {
+        public String deleteSlot(@RequestParam("id") int id,Model model) {
             log.info("Received request to delete slot with ID: " + id);
             boolean deleted = adminService.deteteById(id);
             if (deleted) {
+
+                model.addAttribute("success","trainer is deleted");
                 log.info("Successfully deleted trainer slot with ID: " + id);
             } else {
+
+                model.addAttribute("failure","trainer is deleted");
+
                 log.warn("Failed to delete trainer slot with ID: " + id);
             }
             return "TimingSlots";
@@ -131,10 +136,17 @@ public class AdminSlotsController {
 
     @PostMapping("/assignSlot")
     public String assignTrainer(@RequestParam("entityId") int entityId,
-                                @RequestParam("trainerId") int trainerId) {
+                                @RequestParam("trainerId") int trainerId,Model model) {
 
         log.info("assign slot request in controller ");
         boolean updated = adminService.updateSlot(entityId, trainerId);
+
+        if(updated)
+        {
+           model.addAttribute("success","updated successfully") ;
+        }else {
+            model.addAttribute("failure","not updated");
+        }
         return "AssignSlot";  // Redirect to a confirmation page
     }
 
@@ -174,9 +186,45 @@ public class AdminSlotsController {
         model.addAttribute("trainerDetails", trainerDetails);
         model.addAttribute("trainerId", id);
 
-        return "ViewSlot"; // Forward to JSP page
+        return "ViewSlot"; // Forward to JSP paget
     }
+    @GetMapping("/getAllotedUsers")
+    public String getAllotedUsers(@RequestParam("trainer") String trainer, Model model) {
+        // Process trainerId (e.g., fetch data, delete trainer, etc.)
+        log.info("Request received in controller");
 
+        List<AdminRegistractionEntity> userName = adminService.getUserById(trainer);
+        model.addAttribute("userName", userName); // Ensure this is correct
+
+
+        List<TimeSlotDetailsEntity> list = adminService.getTimeSlot();
+        model.addAttribute("list", list);
+
+        List<TrainerDetailsEntity> listofdto = adminService.getTrainerDetails();
+        model.addAttribute("listofdto", listofdto); // Pass listofdto
+
+        log.info("list: " + list);
+        log.info("listofdto: " + listofdto);
+        return "AssignNewTrainer"; // Return to the JSP page
+    }
+    @GetMapping("/getSlotAndTrainer")
+    public  String getSlotandTrainer(Model model)
+    {
+
+        List<TimeSlotDetailsEntity> list = adminService.getTimeSlot();
+
+        model.addAttribute("list", list);
+
+
+        log.info("list" + list);
+
+        List<TrainerDetailsEntity> listofdto = adminService.getTrainerDetails();
+        model.addAttribute("listofdto", listofdto);
+        log.info("listofdto"+listofdto);
+
+
+        return "AssignNewTrainer";
+    }
 
 
 

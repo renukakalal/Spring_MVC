@@ -160,7 +160,12 @@
                     <li><a href="ResetPassword.jsp">reset Password</a></li>
                     <li><a href="UserTrainerSlotDetails?id=${isAuthenticated.trainer}">Trainer Details</a></li>
 
-                    <li><a href="#">Settings</a></li>
+                    <li><a href="registerView?id=${isAuthenticated.id}">Payment Details</a></li>
+                     <li><a href="getByUserId?UserId=${isAuthenticated.id}">Diet Plan</a><li>
+                     <li><a href="getChanges?UserId=${isAuthenticated.id}">Changes</a><li>
+
+
+
                 </ul>
             </nav>
         </aside>
@@ -173,9 +178,12 @@
             <div class="profile-header">
                 <form action="uploadProfileImage" method="post" enctype="multipart/form-data">
                     <div class="profile-pic">
+
                         <c:choose>
                             <c:when test="${not empty isAuthenticated.filePath}">
-                                <img src="/uploads/${isAuthenticated.filePath}" alt="Profile Image" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+
+                          <img src="image?filePath=${isAuthenticated.filePath}" alt="Profile Image"
+                               style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
                             </c:when>
                             <c:otherwise>
                                 <span style="opacity: 0.5;">📷</span>
